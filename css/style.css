@@ -36,5 +36,6 @@ footer {
   text-align: center;
 }
 .error {
+  color: #f00;
   font-size: 0.8em;
 }
