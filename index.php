@@ -34,23 +34,24 @@
 		<div class="hide" id="agregarUser" title="Agregar Usuario">
 			<form action="" method="post" id="formUsers" name="formUsers">
 				<fieldset id="ocultos">
-					<input type="hidden" id="usr_accion" class="required"></input>
+					<input type="hidden" id="accion" class="required" name="accion" />
+					<input type="hidden" id="id_user" class="required" name="id_user" value="0"/>  
 				</fieldset>
 				<fieldset id="datoUser">
 					<p>Nombre</p>
 					<span></span>
-					<input type="text" id="usr_nombre" name="usr_nombre" placeholder="Nombre Completo" class="{required:true, maxlength:120} span3" required/>
+					<input type="text" id="usr_nombre" name="usr_nombre" placeholder="Nombre Completo" class="required span3" />
 					<p>Puesto</p>
 					<span></span>
-					<input type="text" id="usr_puesto" name="usr_puesto" placeholder="puesto que desempeño" class="{required:true, maxlength:80} span3" required/>
+					<input type="text" id="usr_puesto" name="usr_puesto" placeholder="puesto que desempeño" class="required span3" />
 					<p>Nickname</p>
 					<span></span>
-					<input type="text" id="usr_nick" name="usr_nick" placeholder="nickname" class="{required:true, maxlength:25} span3" required/>
+					<input type="text" id="usr_nick" name="usr_nick" placeholder="nickname" class="required span3" />
 					<p>status</p>
 					<span></span>
-					<select name="usr_status" id="usr_status" class="{required:true} span3" required>
+					<select name="usr_status" id="usr_status" class="required span3">
 						<option value="">Seleccione una Opción..</option>
-						<option value="Activo">Activo</option>
+						<option value="Activo" selected="selected">Activo</option>
 						<option value="Suspendido">Suspendido</option>
 					</select>
 				</fieldset>
@@ -79,7 +80,7 @@
 								<th></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="listaUsuariosOK"> 
 							<?php echo $consultaUsuarios ?>
 						</tbody>
 					</table>	
