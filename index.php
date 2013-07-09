@@ -31,7 +31,7 @@
 		
 	</header>
 	<body>
-		<div class="hide" id="agregarUser" title="Agregar Usuario">
+		<div  id="agregarUser" title="Agregar Usuario">
 			<form action="" method="post" id="formUsers" name="formUsers">
 				<fieldset id="ocultos">
 					<input type="hidden" id="accion" class="required" name="accion" />
@@ -51,7 +51,7 @@
 					<span></span>
 					<select name="usr_status" id="usr_status" class="required span3">
 						<option value="">Seleccione una Opción..</option>
-						<option value="Activo" selected="selected">Activo</option>
+						<option value="Activo">Activo</option>
 						<option value="Suspendido">Suspendido</option>
 					</select>
 				</fieldset>
@@ -63,6 +63,10 @@
 					<span>Espere un momento...</span>
 				</fieldset> 	
 			</form>
+		</div>
+
+		<div id="dialog-borrar" title="Eliminar Registro" class="hide">
+			<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Este registro se borrara de forma permanente. ¿Esta seguro?</p>
 		</div>
 		<div id="wraper">
 			<section id="content">

@@ -43,13 +43,56 @@
 									<td>'.$_POST['usr_nick'].'</td>
 									<td class="centerTXT"><span class="btn btn-mini '.$statusTipoOK[$_POST['usr_status']].'">'.$_POST['usr_status'].'</span>
 									</td>
-									<td class="centerTXT"><a class="btn btn-mini" href="'.$id_userOK.'">Editar</a></td>
+									<td class="centerTXT">
+										<a class="btn btn-mini" href="'.$id_userOK.'">Editar</a>
+										<a class="btn btn-mini" href="'.$id_userOK.'">Eliminar</a>
+									</td>
 								</tr>		
 							';		 	
 
 					}
 					else{
 						$mensajeError = "No se puede guardar el registro en la base de datos";
+					}
+					break;
+
+				case 'editUser':
+					//Armamos el query
+					$query = sprintf("UPDATE tbl_usuarios
+									 SET usr_nombre='%s', usr_puesto='%s', usr_nick='%s', usr_status='%s'
+									 WHERE id_user=%d LIMIT 1",
+									 $_POST['usr_nombre'],$_POST['usr_puesto'],$_POST['usr_nick'],$_POST['usr_status'], $_POST['id_user']);
+
+					// Ejecutamos el query
+					$resultadoQuery = $mysqli -> query($query);
+
+					//Validamos que se haya ejecutado el registro 
+					if ($mysqli -> affected_rows == 1) {
+						$respuestaOK = true;
+						$mensajeError = 'Se ha actualizado el registro correctamente';
+						$contenidoOK = consultaUsers($mysqli);
+					}else{
+						$mensajeError = 'No se ha actualizado el registro';
+					}
+					 
+					break;
+				case 'eliminar':
+					//Armamos el query
+					$query = sprintf("DELETE FROM tbl_usuarios
+									  WHERE id_user = %d LIMIT 1",
+									  $_POST['id_user']);
+
+					//Ejecutamos el query
+					$resultadoQuery = $mysqli -> query($query);
+
+					//Validamos que se haya actualizado el registro
+					if ($mysqli -> affected_rows == 1) {
+						$respuestaOK = true;
+						$mensajeError= 'Se ha actualizado el registro correctamente';
+
+						$contenidoOK = consultaUsers($mysqli);
+					}else{
+						$mensajeError = 'No se ha eliminado el registro';
 					}
 					break;
 				

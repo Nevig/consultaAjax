@@ -1,3 +1,7 @@
+//id de user global
+var idUser_ok = 0;
+var accion_ok = 'noAccion';
+
 $(function(){
 	$('#agregarUser').dialog({
 		autoOpen: false,
@@ -13,14 +17,62 @@ $(function(){
 	       }
 	});
 
+	//Dialogo confirmación de eliminación
+	$('#dialog-borrar').dialog({
+		autoOpen: false,
+		buttons: {
+			Si: function(){
+				$.ajax({
+				beforeSend:function(){
+				
+				},
+				cache: false,
+				type: "POST",
+				dataType: "json",
+				url:"includes/phpAjaxUsers.inc.php",
+				data:"accion=" + accion_ok + "&id_user=" + idUser_ok + "&id" + Math.random(),
+				success: function(response){
+					//Validamos mensaje de error
+					if (response.respuesta == false) {
+						alert(response.mensaje);
+					}else{
+						
+						// si es exitosa la operación 
+						$('#dialog-borrar').dialog('close');
+						
+						$('#listaUsuariosOK').empty();
+		
+						$('#listaUsuariosOK').append(response.contenido);	
+					}	
+				},
+				error: function(){
+					alert('ERROR GENERAL DEL SISTEMA, INTENTE MAS TARDE');
+				}
+			});
+			},
+			No: function(){
+				$(this).dialog('close');
+			}
+		},
+		height:'auto',
+		modal: true,
+		resizible: false,
+		width: 350
+
+	});
+
 	//funcionalidad del boton que abre el formulario
 	$('#goNuevoUser').on('click', function(){
 		
 		//Asignamos valor a la variable accion
 		$('#accion').val('addUser');
 
-		//Abrimos el formulario
-		$('#agregarUser').dialog('open');
+		// Abrimos el formulario
+		$('#agregarUser').dialog({
+			autoOpen: true,
+			title: 'Agregar Usuario'
+		});
+
 	});
 
 	//validar Formulario
@@ -53,6 +105,11 @@ $(function(){
 							$('#sinDatos').remove();
 						}
 
+						// Validar tipo de acción
+						if ($('#accion').val() === 'editUser') {
+							$('#listaUsuariosOK').empty();
+						}
+
 						$('#listaUsuariosOK').append(response.contenido);	
 					}
 					$('#formUsers .ajaxLoader').hide();		
@@ -73,24 +130,32 @@ $(function(){
 		e.preventDefault();
 		//alert($(this).attr('href'));
 
-		//Valor a la accion
-		$('#accion').val('editUser');
-
 		//Id Usuario
-		$('#id_user').val($(this).attr('href'));
+		idUser_ok = $(this).attr('href');
+		accion_ok = $(this).attr('data-accion');
 
-		//Abrimos el formulario
-		$('#agregarUser').dialog('open');
+		$('#id_user').val(idUser_ok);
 
-		//Llenar el formulario con los datos del registro seleccionado  
-		$('#usr_nombre').val($(this).parent().parent().children('td:eq(0)').text());
-		$('#usr_puesto').val($(this).parent().parent().children('td:eq(1)').text());
-		$('#usr_nick').val($(this).parent().parent().children('td:eq(2)').text());
+		if (accion_ok === 'editar') {
+			//Valor de la acción
+			$('#accion').val('editUser');
 
-		//Seleccionar el status
-		$('#usr_status option[value='+ $(this).parent().parent().children('td:eq(3)').text() +']').attr('selected',true);
+			//Llenar el formulario con los datos del registro seleccionado  
+			$('#usr_nombre').val($(this).parent().parent().children('td:eq(0)').text());
+			$('#usr_puesto').val($(this).parent().parent().children('td:eq(1)').text());
+			$('#usr_nick').val($(this).parent().parent().children('td:eq(2)').text());
 
-		console.log($('#usr_status option[value='+ $(this).parent().parent().children('td:eq(3)').text() +']').attr('selected',true));
+			//Seleccionar el status
+			$('#usr_status option[value='+ $(this).parent().parent().children('td:eq(3)').text() +']').attr('selected', 'selected');
 
-	}); 
+			// Abrimos el formulario
+			$('#agregarUser').dialog({
+				autoOpen: true,
+				title: 'Editar Usuario'
+			});
+		
+		}else if ($(this).attr('data-accion') === 'eliminar') {
+			$('#dialog-borrar').dialog('open');
+		}
+	});
 });
